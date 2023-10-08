@@ -11,8 +11,8 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-const YamlPath = "./conf.yaml"
-const YamlUrl = "http://tip.ruanfor.com/conf.yaml"
+const YamlPath = "/usr/local/etc/tip.yaml"
+const YamlUrl = "http://tip.ruanfor.com/tip.yaml"
 const YamlTmp = "/var/tmp/tip"
 
 type Tip struct {
