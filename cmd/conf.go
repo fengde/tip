@@ -1,4 +1,4 @@
-package main
+package cmd
 
 import (
 	"fmt"
@@ -12,7 +12,7 @@ import (
 )
 
 const YamlPath = "./conf.yaml"
-const YamlUrl = "https://raw.githubusercontent.com/fengde/tip/main/cmd.yaml"
+const YamlUrl = "http://tip.ruanfor.com/conf.yaml"
 const YamlTmp = "/var/tmp/tip"
 
 type Tip struct {
@@ -23,6 +23,9 @@ type Tip struct {
 type Conf map[string][]Tip
 
 func LoadYaml() (*Conf, error) {
+	if err := UpdateYaml(); err != nil {
+		fmt.Println(err)
+	}
 	content, err := os.ReadFile(YamlPath)
 	if err != nil {
 		return nil, err
@@ -35,22 +38,19 @@ func LoadYaml() (*Conf, error) {
 	return &conf, nil
 }
 
-func UpdateYaml() {
+func UpdateYaml() error {
 	lastUpdate, _ := filex.ReadFileToString(YamlTmp)
-	if lastUpdate != "" {
-		if timex.NowUnix()-timex.String2Unix(lastUpdate) > 86400 {
-			resp, err := httpx.Get(YamlUrl, nil, nil, time.Second*3)
-			if err != nil {
-				fmt.Println(err)
-				return
+	if lastUpdate == "" || timex.NowUnix()-timex.String2Unix(lastUpdate) > 86400 {
+		resp, err := httpx.Get(YamlUrl, nil, nil, time.Second*3)
+		if err != nil {
+			return err
+		}
+		if resp.StatusCode() == 200 {
+			if err := filex.WriteStringToFile(YamlPath, resp.String(), false); err != nil {
+				return err
 			}
-			if resp.StatusCode() == 200 {
-				if err := filex.WriteStringToFile(YamlPath, resp.String(), false); err != nil {
-					fmt.Println(err)
-					return
-				}
-				filex.WriteStringToFile(YamlTmp, fmt.Sprintf("%d", timex.NowUnix()), false)
-			}
+			filex.WriteStringToFile(YamlTmp, fmt.Sprintf("%d", timex.NowUnix()), false)
 		}
 	}
+	return nil
 }
