@@ -28,10 +28,6 @@ tar:
   -
     cmd: tar zxf {dir}.tar.gz
     desc: 解压到当前文件夹
-zip:
-  -
-    cmd: todo
-    desc: todo
 top:
   -
     cmd: top
@@ -48,3 +44,62 @@ top:
   -
     cmd: top -p {pid}
     desc: 指定进程号，仅仅查看某个进程消耗
+docker:
+  -
+    cmd: docker exec -it {container_id} bash
+    desc: 进到容器内部
+  -
+    cmd: docker logs -f -t {container_id}
+    desc: 连续打印最新日志
+  -
+    cmd: docker logs --since 30m {container_id}
+    desc: 查看最近30m日志
+  -
+    cmd: docker logs --since="2023-01-01T00:00:00" {container_id}
+    desc: 查看指定时间之后的日志
+  -
+    cmd: docker logs --since="2023-01-01T00:00:00" --until="2023-01-02T00:00:00" {container_id}
+    desc: 查看指定某段时间内的日志
+  -
+    cmd: docker logs {container_id} | grep {context}
+    desc: 从所有日志中查询指定文本内容
+lsof:
+  - 
+    cmd: lsof -p {pid}
+    desc: 查看进程内打开的文件
+  -
+    cmd: lsof -i
+    desc: 查看进程监听的端口以及进程内建立的连接
+  -
+    cmd: lsof -i:{port}
+    desc: 查看监听端口的进程
+  -
+    cmd: lsof -i @{host}
+    desc: 查看有哪些进程与host连接
+curl:
+  -
+    cmd: curl ifconfig.net
+    desc: 查看出口ip
+  -
+    cmd: curl -i {url}
+    desc: curl get请求
+  -
+    cmd: curl -v -H 'Content-Type:applicaiton/json' -X POST -d '{json}' {url}
+    desc: curl post json请求
+  -
+    cmd: curl -s {url} | bash
+    desc: curl下载脚本并执行
+ulimit:
+  -
+    cmd: ulimit -a
+    desc: 查看系统文件数设置情况；open files 代表进程能打开的文件数量上限
+  -
+    cmd: vim /etc/security/limits.conf
+    desc: 修改系统文件数设置
+find:
+  -
+    cmd: find {path} -name {filename}
+    desc: 指定文件夹根据名称递归查找文件
+  -
+    cmd: find {path} | xargs grep -ri {content}
+    desc: 指定文件夹查找文件名称或者文件内容符合条件的
