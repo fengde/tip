@@ -9,6 +9,13 @@ df:
   - 
     cmd: df -h
     desc: 查看磁盘总量，使用量，剩余量信息
+du:
+  -
+    cmd: du -h {file}
+    desc: 统计文件夹下文件列表或者文件大小
+  -
+    cmd: du -sh {dir}
+    desc: 统计文件大小总和
 free:
   -
     cmd: free -h
@@ -48,6 +55,12 @@ docker:
   -
     cmd: docker exec -it {container_id} bash
     desc: 进到容器内部
+  -
+    cmd: docker cp {container_id}:{path} {path}
+    desc: 拷贝容器内文件到本机
+  -
+    cmd: docker cp {path} {container_id}:{path}
+    desc: 拷贝本机文件到容器内部
   -
     cmd: docker logs -f -t {container_id}
     desc: 连续打印最新日志
@@ -103,3 +116,65 @@ find:
   -
     cmd: find {path} | xargs grep -ri {content}
     desc: 指定文件夹查找文件名称或者文件内容符合条件的
+ssh:
+  -
+    cmd: ssh {user}@{host} -p {port}
+    desc: ssh登录远程服务器
+ntpdate:
+  -
+    cmd: ntpdate 3.asia.pool.ntp.org
+    desc: 连接ntp服务器更新本地时间
+chmod:
+  -
+    cmd: chmod a+{x|r|w} {file}
+    desc: 给文件添加读写执行权限
+  -
+    cmd: chmod 755 {file}
+    desc: 给文件添加读写执行权限
+mysql:
+  -
+    cmd: mysql --host={host} --port={port} --user={user} -p
+    desc: mysql客户端登录
+mysqldump:
+  -
+    cmd: mysqldump –single-transaction  -u{user} -p{password} --no-data --databases {db1} {db2} > {file}_`date '+%Y%m%d'`.sql
+    desc: 备份表结构到文件
+  -
+    cmd: mysqldump –single-transaction  -u{user} -p{password} --databases {db1} {db2} > {file}_`date '+%Y%m%d'`.sql
+    desc: 备份db到文件
+  -
+    cmd: mysqldump –single-transaction  -u{user} -p{password} --all-databases > {file}_`date '+%Y%m%d'`.sql
+    desc: 备份所有db到文件
+  -
+    cmd: mysqldump –single-transaction  -u{user} -p{password} --ignore-table={db1.table1} --ignore-table={db2.table2} --databases {db1} {db2}  > {file}_`date '+%Y%m%d'`.sql
+    desc: 备份db到文件，不备份指定表（比如日志表）
+redis:
+  -
+    cmd: redis-cli -h {host} -p {port}
+    desc: redis客户端登录
+log:
+  -
+    cmd: cat -n {logfile} | grep {content | traceid}
+    desc: 查询日志符合条件的日志打印
+  -
+    cmd: cat -n {logfile} | tail -n +{lineid} | more
+    desc: 根据查询到的行号，从行号开始分页进行内容查看
+ln:
+  -
+    cmd: ln -s {src} {dest_link}
+    desc: 创建软链接
+ps:
+  -
+    cmd: ps aux
+    desc: 查看进程列表
+kill:
+  -
+    cmd: kill {pid} | kill -15 {pid}
+    desc: 优雅退出
+  -
+    cmd: kill -9 {pid}
+    desc: 强杀进程
+time:
+  -
+    cmd: time {command}
+    desc: 统计命令执行时长，连同使用的用户态时长和内核态时长都会反馈出来
