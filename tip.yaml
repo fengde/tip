@@ -178,3 +178,20 @@ time:
   -
     cmd: time {command}
     desc: 统计命令执行时长，连同使用的用户态时长和内核态时长都会反馈出来
+git:
+  -
+    cmd: git tag {v1.0.0} && git push origin {v1.0.0}
+    desc: 当前分支打tag，同时推送到远程仓库
+wrk:
+  -
+    cmd: brew install wrk
+    desc: mac安装压测工具wrk
+  -
+    cmd: git clone https://github.com/wg/wrk.git && cd wrk && make
+    desc: linux安装压测工具wrk
+  -
+    cmd: wrk -c100 -t2 -d30s --latency http://127.0.0.1:8080/api
+    desc: get请求，消费队列长度100， 2个线程，持续30s压测
+  -
+    cmd: wrk -c100 -t2 -d30s --latency http://127.0.0.1:8080/api  --script=post.lua
+    desc: post请求，消费队列长度100， 2个线程，持续30s压测（post.lua示例：http://tip.ruanfor.com/post.lua 或者参看 https://www.cnblogs.com/felixzh/p/8400729.html)
