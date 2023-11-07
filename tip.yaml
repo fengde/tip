@@ -195,3 +195,21 @@ wrk:
   -
     cmd: wrk -c100 -t2 -d30s --latency http://127.0.0.1:8080/api  --script=post.lua
     desc: post请求，消费队列长度100， 2个线程，持续30s压测（post.lua示例：http://tip.ruanfor.com/post.lua 或者参看 https://www.cnblogs.com/felixzh/p/8400729.html)
+conda:
+  -
+    cmd: conda create -n {envname} python={version}
+    desc: 创建虚拟环境，同时指定python版本
+  -
+    cmd: conda activate {envname}
+    desc: 设置环境
+  -
+    cmd: conda deactivate {envname}
+    desc: 退出环境
+nslookup:
+  -
+    cmd: nslookup {domain}
+    desc: 域名解析
+dig:
+  -
+    cmd: dig @{dns_ip} {domain}
+    desc: 指定dns解析器，域名解析
